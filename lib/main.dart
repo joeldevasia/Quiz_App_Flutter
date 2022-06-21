@@ -31,6 +31,45 @@ class QuizApp extends StatefulWidget {
 class _QuizAppState extends State<QuizApp> {
   List<Icon> score = [];
 
+  void alertPopUp() {
+    Alert(
+        context: context,
+        type: AlertType.success,
+        title: 'Quiz Completed',
+        desc: 'You have successfully completed the quiz',
+        buttons: [
+          DialogButton(
+            onPressed: () {
+              setState(() {
+                questionBank.reset();
+                score.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.green,
+            child: const Text(
+              'Reset',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          DialogButton(
+            onPressed: () {
+              SystemNavigator.pop();
+              // exit(0);
+            },
+            color: Colors.red,
+            child: const Text(
+              'Exit',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          )
+        ]).show();
+  }
+
   void checkAnswer(bool userAnswer) {
     setState(() {
       if (score.length < questionBank.getLength()) {
@@ -47,40 +86,7 @@ class _QuizAppState extends State<QuizApp> {
         }
         questionBank.nextQuestion();
       } else {
-        questionBank.reset();
-        score.clear();
-        Alert(
-            context: context,
-            type: AlertType.success,
-            title: 'Quiz Completed',
-            desc: 'You have successfully completed the quiz',
-            buttons: [
-              DialogButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                color: Colors.green,
-                child: const Text(
-                  'Reset',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              DialogButton(
-                onPressed: () {
-                  SystemNavigator.pop();
-                  // exit(0);
-                },
-                color: Colors.red,
-                child: const Text(
-                  'Exit',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            ]).show();
+       alertPopUp();
       }
     });
   }
